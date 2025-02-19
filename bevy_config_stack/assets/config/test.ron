@@ -1,0 +1,23 @@
+(
+    max_speed: 100,
+    acceleration: 10,
+    turn_speed: 10,
+    wheels: [
+        (
+            radius: 1.0,
+            width: 0.5
+        ),
+        (
+            radius: 1.0,
+            width: 0.5
+        ),
+        (
+            radius: 1.0,
+            width: 0.5,
+        ),
+        (
+            radius: 1.0,
+            width: 0.5,
+        ),
+    ]
+)

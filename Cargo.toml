@@ -1,0 +1,9 @@
+[workspace]
+members = ["bevy_config_stack"]
+resolver = "2"
+
+[workspace.dependencies]
+bevy = { version = "0.15.2", features = ["file_watcher"] }
+ron = "0.8.1"
+serde = { version = "1.0.215", features = ["derive"] }
+thiserror = "2.0.11"

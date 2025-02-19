@@ -1,0 +1,10 @@
+[package]
+name = "bevy_config_stack"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+bevy.workspace = true
+ron.workspace = true
+serde.workspace = true
+thiserror.workspace = true
