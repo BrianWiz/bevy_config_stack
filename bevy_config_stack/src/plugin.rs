@@ -1,10 +1,5 @@
 use bevy::prelude::*;
-use crate::{ConfigAsset, ConfigAssetLoader};
-
-#[derive(Resource)]
-pub struct Config<TAsset: ConfigAsset> {
-    pub data: TAsset,
-}
+use crate::{ConfigAsset, load::ConfigAssetLoader};
 
 #[derive(Resource)]
 struct ConfigState<TAsset: ConfigAsset> {
@@ -25,17 +20,17 @@ pub struct UnloadConfigAsset<TAsset: ConfigAsset> {
     _marker: std::marker::PhantomData<TAsset>,
 }
 
-pub struct ConfigAssetLoaderPlugin<T: ConfigAsset> {
+pub struct ConfigAssetLoaderPlugin<TAsset: ConfigAsset> {
     name: String,
     path: String,
-    _marker: std::marker::PhantomData<T>,
+    _marker: std::marker::PhantomData<TAsset>,
 }
 
 impl<TAsset: ConfigAsset> Default for ConfigAssetLoaderPlugin<TAsset> {
     fn default() -> Self {
         Self {
-            name: "".to_string(),
-            path: "".to_string(),
+            name: stringify!(TAsset).to_string(),
+            path: TAsset::CONFIG_PATH.to_string(),
             _marker: std::marker::PhantomData,
         }
     }
@@ -50,6 +45,7 @@ impl<TAsset: ConfigAsset> Plugin for ConfigAssetLoaderPlugin<TAsset> {
             name: self.name.clone(),
             path: self.path.clone(),
         });
+        app.insert_resource(TAsset::default());
         app.add_event::<ConfigAssetLoadedEvent<TAsset>>();
         app.add_event::<UnloadConfigAsset<TAsset>>();
         app.add_systems(Startup, Self::setup_system);
@@ -68,7 +64,10 @@ impl<TAsset: ConfigAsset> ConfigAssetLoaderPlugin<TAsset> {
         }
     }
 
-    fn setup_system(mut state: ResMut<ConfigState<TAsset>>, asset_server: Res<AssetServer>) {
+    fn setup_system(
+        mut state: ResMut<ConfigState<TAsset>>, 
+        asset_server: Res<AssetServer>,
+    ) {
         state.handle = asset_server.load(state.path.clone());
     }
     
@@ -85,7 +84,7 @@ impl<TAsset: ConfigAsset> ConfigAssetLoaderPlugin<TAsset> {
                     if id == &state.handle.id() {
                         if let Some(data) = assets.remove(state.handle.id()) {
                             info!("Config asset '{}' loaded from {}", state.name, state.path);
-                            commands.insert_resource(Config { data });
+                            commands.insert_resource::<TAsset>(data);
                             config_asset_loaded_event.send(ConfigAssetLoadedEvent {
                                 name: state.name.clone(),
                                 path: state.path.clone(),
@@ -99,7 +98,7 @@ impl<TAsset: ConfigAsset> ConfigAssetLoaderPlugin<TAsset> {
                     if id == &state.handle.id() {
                         if let Some(data) = assets.remove(state.handle.id()) {
                             info!("Config asset '{}' modified from {}", state.name, state.path);
-                            commands.insert_resource(Config { data });
+                            commands.insert_resource::<TAsset>(data);
                             config_asset_loaded_event.send(ConfigAssetLoadedEvent {
                                 name: state.name.clone(),
                                 path: state.path.clone(),
@@ -111,5 +110,9 @@ impl<TAsset: ConfigAsset> ConfigAssetLoaderPlugin<TAsset> {
                 _ => {}
             }
         }
+    }
+
+    pub fn print_docs() where TAsset: clap::CommandFactory {
+        <TAsset as clap::CommandFactory>::command().print_help().unwrap();
     }
 }
