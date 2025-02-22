@@ -38,7 +38,7 @@ fn main() {
         }))
         // Config assets are expected to be in RON format under the assets folder.
         // Accepted extensions are: .ron, .config, .cfg (recommend using .ron for syntax highlighting in your IDE)
-        .add_plugins(ConfigAssetLoaderPlugin::<VehicleConfig>::new("config/test.ron"))
+        .add_plugins(ConfigAssetLoaderPlugin::<VehicleConfig>::new("config/vehicle.ron"))
         .add_systems(Update, vehicle_config_loaded_event)
         .run();
 }
