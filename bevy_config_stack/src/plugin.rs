@@ -2,11 +2,6 @@ use bevy::prelude::*;
 use crate::{ConfigAsset, load::ConfigAssetLoader};
 
 #[derive(Resource)]
-pub struct Config<TAsset: ConfigAsset> {
-    pub data: TAsset,
-}
-
-#[derive(Resource)]
 struct ConfigState<TAsset: ConfigAsset> {
     handle: Handle<TAsset>,
     path: String,
@@ -79,7 +74,7 @@ impl<TAsset: ConfigAsset> ConfigAssetLoaderPlugin<TAsset> {
                     if id == &state.handle.id() {
                         if let Some(data) = assets.remove(state.handle.id()) {
                             info!("Config asset loaded from {}", state.path);
-                            commands.insert_resource(Config { data });
+                            commands.insert_resource(data);
                             config_asset_loaded_event.send(ConfigAssetLoadedEvent {
                                 path: state.path.clone(),
                                 _marker: std::marker::PhantomData,
@@ -92,7 +87,7 @@ impl<TAsset: ConfigAsset> ConfigAssetLoaderPlugin<TAsset> {
                     if id == &state.handle.id() {
                         if let Some(data) = assets.remove(state.handle.id()) {
                             info!("Config asset modified from {}", state.path);
-                            commands.insert_resource(Config { data });
+                            commands.insert_resource(data);
                             config_asset_loaded_event.send(ConfigAssetLoadedEvent {
                                 path: state.path.clone(),
                                 _marker: std::marker::PhantomData,

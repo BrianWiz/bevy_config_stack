@@ -4,7 +4,7 @@ use serde::Deserialize;
 use bevy_config_stack::prelude::*;
 
 #[allow(dead_code)]
-#[derive(Asset, TypePath, Debug, Deserialize)]
+#[derive(Asset, TypePath, Debug, Deserialize, Resource)]
 struct VehicleConfig {
     max_speed: f32,
     acceleration: f32,
@@ -46,12 +46,12 @@ fn main() {
 /// An event is fired every time the asset is loaded 
 /// or modified at runtime (Bevy's file_watcher feature must be enabled for modified events to work)
 fn vehicle_config_loaded_event(
-    vehicle_config: Option<Res<Config<VehicleConfig>>>,
+    vehicle_config: Option<Res<VehicleConfig>>,
     mut config_asset_loaded_event: EventReader<ConfigAssetLoadedEvent<VehicleConfig>>,
 ) {
     for _ in config_asset_loaded_event.read() {
         if let Some(ref config) = vehicle_config {
-            info!("Vehicle config: {:?}", config.data);
+            info!("Vehicle config: {:?}", config);
         }
     }
 }
