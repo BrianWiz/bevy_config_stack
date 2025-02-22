@@ -1,4 +1,7 @@
-use bevy::{asset::{io::Reader, AssetLoader, LoadContext}, prelude::*};
+use bevy::{
+    asset::{io::Reader, AssetLoader, LoadContext},
+    prelude::*,
+};
 use thiserror::Error;
 
 use crate::ConfigAsset;

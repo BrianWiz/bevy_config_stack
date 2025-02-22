@@ -1,0 +1,27 @@
+/// This config is expected to be in the assets folder under the config folder
+/// - path: config/test.ron
+VehicleConfig (
+    /// The visual offset
+    /// - type: Vec3
+    visual_offset: Vec3(0.0, 0.0, 0.0),
+
+    /// Maximum speed of the vehicle in m/s
+    /// - type: f32
+    max_speed: 100.0,
+
+    /// Acceleration rate in m/s²
+    /// - type: f32
+    acceleration: 10.0,
+
+    /// You can configure each wheel too
+    /// - type: Vec < WheelConfig >
+    wheels: [],
+
+    /// Another nested config struct
+    /// - type: WeaponConfig
+    test: WeaponConfig (
+        /// The fire rate of the weapon in rounds per minute
+        /// - type: f32
+        fire_rate: 0.0,
+    ),
+)

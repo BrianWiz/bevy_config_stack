@@ -8,5 +8,3 @@ bevy.workspace = true
 ron.workspace = true
 serde.workspace = true
 thiserror.workspace = true
-clap.workspace = true
-bevy_config_docs.workspace = true

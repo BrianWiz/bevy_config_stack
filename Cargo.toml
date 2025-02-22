@@ -1,5 +1,5 @@
 [workspace]
-members = ["bevy_config_stack", "bevy_config_docs"]
+members = ["bevy_config_stack"]
 resolver = "2"
 
 [workspace.dependencies]
@@ -7,10 +7,3 @@ bevy = { version = "0.15.2", features = ["file_watcher"] }
 ron = "0.8.1"
 serde = { version = "1.0.215", features = ["derive"] }
 thiserror = "2.0.11"
-clap = { version = "4.5.30", features = ["derive"] }
-syn = "2.0.98"
-quote = "1.0.38"
-proc-macro2 = "1.0.93"
-
-bevy_config_docs = { path = "bevy_config_docs" }
-bevy_config_stack = { path = "bevy_config_stack" }
