@@ -1,6 +1,10 @@
 # Bevy Config Stack
 
+
 A convenient configuration plugin for Bevy.
+
+## Example
+`cargo run --example basic`
 
 ## Features
 - [x] Load config assets from RON format under the assets folder, available as resources in your Bevy app.
